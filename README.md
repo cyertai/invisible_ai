@@ -75,5 +75,5 @@ Data structures:
 ## Time Spent
 	 - Implementation ~ 6.5hr across several sessions
 	 - This writeup ~ 1hr
-
+	 - Flowchart ~ 1/2 hr
 
