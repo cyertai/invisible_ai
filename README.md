@@ -10,6 +10,19 @@ Here I implement a multi-threaded image processor that takes a video file as its
 
 The user steps through each frame using the keyboard; and the relevant features are computed in three seperate threads, belonging to the threadpool.
 
+## Folder Structure and Execution
+	. contains CMakeLists.txt and the README.md
+	/src contains the project code
+	/data contains an example image, and is where you should store your target files
+	/bin contains compiled executables
+
+	To build, from the home directory run:
+	cmake .
+	cmake --build .
+
+	To run, from the bin directory, type
+	./multiFeatureDetection <filepath>
+
 ## Code Design
 
 ### Algorithms
