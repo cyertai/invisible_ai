@@ -11,16 +11,18 @@ Here I implement a multi-threaded image processor that takes a video file as its
 The user steps through each frame using the keyboard; and the relevant features are computed in three seperate threads, belonging to the threadpool.
 
 ## Folder Structure and Execution
-	. contains CMakeLists.txt and the README.md
-	/src contains the project code
-	/data contains an example image, and is where you should store your target files
-	/bin contains compiled executables
+. contains CMakeLists.txt and the README.md
+/src contains the project code
+/data contains an example image, and is where you should store your target files
+/bin contains compiled executables
 
-	To build, from the home directory run:
+To build, from the home directory run:
+
 	cmake .
 	cmake --build .
 
-	To run, from the bin directory, type
+To run, from the bin directory, type
+
 	./multiFeatureDetection <filepath>
 
 ## Code Design
@@ -30,6 +32,7 @@ For each algorithm, I used the example settings and implementation from the open
 
 ### Structure
 We start a main thread, which:
+
 	Opens the video file
 	Starts the threadpool
 	Enters this loop:
@@ -42,6 +45,7 @@ We start a main thread, which:
 	Exits
 
 Each worker thread exists in the following loop:
+
 	Checks if it has been asked to join by the main thread
 		If so, returns and implicit call to pthread_exit()
 
@@ -51,6 +55,7 @@ Each worker thread exists in the following loop:
 
 
 Data structures:
+
 	There are several important data structures in this program:
 		- threadData (TPN_t** - Thread Pool Node array)
 		- G_taskListMutex (A global mutex for shared lists)
@@ -70,12 +75,14 @@ Data structures:
 	of time I implemented global queues in the form of std::lists
 
 ### Desired Final Structure
-	While the code as is works and achieves the stated objectives, it falls short in several ways:
+While the code as is works and achieves the stated objectives, it falls short in several ways:
+
 		- Inability to pre-compute results before the user advances the frame
 		- Inability to utilize the supported number of machine threads (12 in my case)
 		- Master thread is also the display thread, and is blocking
 
-	I desired, if I had the time, to make the following changes:
+I desired, if I had the time, to make the following changes:
+
 		- The master thread spins off frames to the task lists, keeping them with
 		  a sufficient level of work to do at all times
 		- Clean communication struct between master->worker->display threads
@@ -83,14 +90,16 @@ Data structures:
 		- Display thread seperate from the master thread, so that computation
 		  can progress without waiting for the user
 
-	I see several challenges in implementing this:
+I see several challenges in implementing this:
+
 		- Managing the level of pre-computed results so that memory usage does
 		  not become a challenge
 		- Bookkeeping to match computed results with the correct display frame
 		- Design of the thread communication object containing cv::Mat and living in the heap
 
 ## Challenges
-	I had several challenges with this project, and felt like I learned a lot
+I had several challenges with this project, and felt like I learned a lot
+
 		- building opencv_contrib with the correct flags took some time and research
 		- could not find a way to use cv::Mats allocated in the heap to share
 		  data between threads
